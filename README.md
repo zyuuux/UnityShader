@@ -1,2 +1,0 @@
-# UnityShader
-Shader Study
