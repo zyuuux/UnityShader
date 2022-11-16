@@ -75,19 +75,19 @@ Shader "Scan"
                 half3 worldNormal = normalize(i.worldNormal);
                 half3 worldView = normalize(_WorldSpaceCameraPos.xyz - i.worldPos);
                
-                //·ÆÄù¶û
+                //è²æ¶…å°”
                 half NdotV = saturate(dot(worldNormal, worldView));
                 half fresnel = 1.0 - NdotV;
                 fresnel = smoothstep(_RimMin, _RimMax, fresnel);
 
-                //²ÄÖÊµÄalphaÖµ
+                //æè´¨çš„alphaå€¼
                 fixed4 emiss = tex2D(_MainTex, i.uv).r;
                 emiss = pow(emiss, _TexPower);
 
                 half finalRimAlpha = saturate(fresnel + emiss);
                 half3 finalRimColor = lerp(_InnerColor.xyz, _RimColor.xyz * _RimIntensity, finalRimAlpha);
 
-                //Á÷¹â
+                //æµå…‰
                 half2 flowUV = (i.worldPos.xy - i.worldPivot.xy) * _FlowTilling.xy;
                 flowUV = flowUV + _Time.y * _FlowSpeed.xy;
                 float4 flowColor = tex2D(_FlowTex, flowUV) * _FlowIntensity;
