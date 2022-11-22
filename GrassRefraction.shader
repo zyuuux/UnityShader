@@ -2,56 +2,56 @@ Shader "GrassRefraction"
 {
     Properties
     {
-        _MainTex ("Main Tex", 2D) = "white" {}  //²£Á§µÄ²ÄÖÊÎÆÀí
-        _BumpMap ("Normla Map", 2D) = "bump" {}  //²£Á§µÄ·¨ÏßÎÆÀí
-        _Cubemap ("Environment Cubemap", Cube) = "_Skybox" {}  //Ä£Äâ·´ÉäµÄ»·¾³ÎÆÀí
-        _Distortion ("Distortion", Range(0, 100)) = 10  //¿ØÖÆÄ£ÄâÕÛÉäÊ±Í¼ÏñµÄÅ¤Çú³Ì¶È
-        _RefractAmount ("Refract Amount", Range(0.0, 1.0)) = 1.0  //¿ØÖÆÕÛÉä³Ì¶È£¬ÖµÎª0Ê±Ö»°üº¬·´ÉäĞ§¹û£¬ÖµÎª1Ê±Ö»°üº¬ÕÛÉäĞ§¹û
+        _MainTex ("Main Tex", 2D) = "white" {}  //ç»ç’ƒçš„æè´¨çº¹ç†
+        _BumpMap ("Normla Map", 2D) = "bump" {}  //ç»ç’ƒçš„æ³•çº¿çº¹ç†
+        _Cubemap ("Environment Cubemap", Cube) = "_Skybox" {}  //æ¨¡æ‹Ÿåå°„çš„ç¯å¢ƒçº¹ç†
+        _Distortion ("Distortion", Range(0, 100)) = 10  //æ§åˆ¶æ¨¡æ‹ŸæŠ˜å°„æ—¶å›¾åƒçš„æ‰­æ›²ç¨‹åº¦
+        _RefractAmount ("Refract Amount", Range(0.0, 1.0)) = 1.0  //æ§åˆ¶æŠ˜å°„ç¨‹åº¦ï¼Œå€¼ä¸º0æ—¶åªåŒ…å«åå°„æ•ˆæœï¼Œå€¼ä¸º1æ—¶åªåŒ…å«æŠ˜å°„æ•ˆæœ
     }
     SubShader
     {
         Tags { "Queue"="Transparent" "RenderType"="Opaque" }
-        GrabPass { "_RefractionTex" }  //°Ñ¼´½«»æÖÆ¶ÔÏóÊ±µÄÆÁÄ»ÄÚÈİ×¥È¡µ½ÎÆÀíÖĞ
+        GrabPass { "_RefractionTex" }  //æŠŠå³å°†ç»˜åˆ¶å¯¹è±¡æ—¶çš„å±å¹•å†…å®¹æŠ“å–åˆ°çº¹ç†ä¸­
 
         Pass
         {
             CGPROGRAM
             #pragma vertex vert
-			#pragma fragment frag
-			
-			#include "UnityCG.cginc"
-			
-			sampler2D _MainTex;
-			float4 _MainTex_ST;
-			sampler2D _BumpMap;
-			float4 _BumpMap_ST;
-			samplerCUBE _Cubemap;
-			float _Distortion;
-			fixed _RefractAmount;
-			sampler2D _RefractionTex;
-			float4 _RefractionTex_TexelSize;  //ÎÆÀíµÄÎÆËØ´óĞ¡
-			
-			struct a2v {
-				float4 vertex : POSITION;
-				float3 normal : NORMAL;
-				float4 tangent : TANGENT; 
-				float2 texcoord: TEXCOORD0;
-			};
-			
-			struct v2f {
-				float4 pos : SV_POSITION;
-				float4 scrPos : TEXCOORD0;
-				float4 uv : TEXCOORD1;
-				float4 TtoW0 : TEXCOORD2;  
-			    float4 TtoW1 : TEXCOORD3;  
-			    float4 TtoW2 : TEXCOORD4; 
-			};
+	    #pragma fragment frag
+
+	    #include "UnityCG.cginc"
+
+	    sampler2D _MainTex;
+	    float4 _MainTex_ST;
+	    sampler2D _BumpMap;
+	    float4 _BumpMap_ST;
+	    samplerCUBE _Cubemap;
+	    float _Distortion;
+	    fixed _RefractAmount;
+	    sampler2D _RefractionTex;
+	    float4 _RefractionTex_TexelSize;  //çº¹ç†çš„çº¹ç´ å¤§å°
+
+	    struct a2v {
+		float4 vertex : POSITION;
+		float3 normal : NORMAL;
+		float4 tangent : TANGENT; 
+		float2 texcoord: TEXCOORD0;
+	    };
+
+	    struct v2f {
+		float4 pos : SV_POSITION;
+		float4 scrPos : TEXCOORD0;
+		float4 uv : TEXCOORD1;
+		float4 TtoW0 : TEXCOORD2;  
+		float4 TtoW1 : TEXCOORD3;  
+		float4 TtoW2 : TEXCOORD4; 
+	    };
 
             v2f vert (a2v v)
             {
                 v2f o;
                 o.pos = UnityObjectToClipPos(v.vertex);
-                o.scrPos = ComputeGrabScreenPos(o.pos); //µÃµ½¶ÔÓ¦±»×¥È¡µÄÆÁÄ»Í¼ÏñµÄ²ÉÑù×ø±ê
+                o.scrPos = ComputeGrabScreenPos(o.pos); //å¾—åˆ°å¯¹åº”è¢«æŠ“å–çš„å±å¹•å›¾åƒçš„é‡‡æ ·åæ ‡
 
                 o.uv.xy = TRANSFORM_TEX(v.texcoord, _MainTex);
                 o.uv.zw = TRANSFORM_TEX(v.texcoord, _BumpMap);
@@ -61,10 +61,10 @@ Shader "GrassRefraction"
                 fixed3 worldTangent = UnityObjectToWorldDir(v.tangent.xyz);
                 fixed3 worldBinormal = cross(worldNormal, worldTangent) * v.tangent.w;
 
-                //´ÓÇĞÏß¿Õ¼äµ½ÊÀ½ç¿Õ¼äµÄ±ä»»¾ØÕó
+                //ä»åˆ‡çº¿ç©ºé—´åˆ°ä¸–ç•Œç©ºé—´çš„å˜æ¢çŸ©é˜µ
                 o.TtoW0 = float4(worldTangent.x, worldBinormal.x, worldNormal.x, worldPos.x);  
-				o.TtoW1 = float4(worldTangent.y, worldBinormal.y, worldNormal.y, worldPos.y);  
-				o.TtoW2 = float4(worldTangent.z, worldBinormal.z, worldNormal.z, worldPos.z);  
+		o.TtoW1 = float4(worldTangent.y, worldBinormal.y, worldNormal.y, worldPos.y);  
+		o.TtoW2 = float4(worldTangent.z, worldBinormal.z, worldNormal.z, worldPos.z);  
 
                 return o;
             }
@@ -72,29 +72,29 @@ Shader "GrassRefraction"
             fixed4 frag (v2f i) : SV_Target
             {
                 float3 worldPos = float3(i.TtoW0.w, i.TtoW1.w, i.TtoW2.w);
-				fixed3 worldViewDir = normalize(UnityWorldSpaceViewDir(worldPos));
+		fixed3 worldViewDir = normalize(UnityWorldSpaceViewDir(worldPos));
 				
-				//µÃµ½ÇĞÏß¿Õ¼äÏÂµÄ·¨Ïß·½Ïò
-				fixed3 bump = UnpackNormal(tex2D(_BumpMap, i.uv.zw));
-				
-				//¼ÆËãÇĞÏß¿Õ¼äÏÂµÄÆ«ÒÆ
-				float2 offset = bump.xy * _Distortion * _RefractionTex_TexelSize.xy;
-				i.scrPos.xy = offset * i.scrPos.z + i.scrPos.xy;
-				fixed3 refrCol = tex2D(_RefractionTex, i.scrPos.xy/i.scrPos.w).rgb;
-				
-				//°Ñ·¨Ïß×ª»»µ½ÊÀ½ç¿Õ¼ä
-				bump = normalize(half3(dot(i.TtoW0.xyz, bump), dot(i.TtoW1.xyz, bump), dot(i.TtoW2.xyz, bump)));
-				fixed3 reflDir = reflect(-worldViewDir, bump);
-				fixed4 texColor = tex2D(_MainTex, i.uv.xy);
-				fixed3 reflCol = texCUBE(_Cubemap, reflDir).rgb * texColor.rgb;
-				
-				fixed3 finalColor = reflCol * (1 - _RefractAmount) + refrCol * _RefractAmount;
-				
-				return fixed4(finalColor, 1);
+		//å¾—åˆ°åˆ‡çº¿ç©ºé—´ä¸‹çš„æ³•çº¿æ–¹å‘
+		fixed3 bump = UnpackNormal(tex2D(_BumpMap, i.uv.zw));
+
+		//è®¡ç®—åˆ‡çº¿ç©ºé—´ä¸‹çš„åç§»
+		float2 offset = bump.xy * _Distortion * _RefractionTex_TexelSize.xy;
+		i.scrPos.xy = offset * i.scrPos.z + i.scrPos.xy;
+		fixed3 refrCol = tex2D(_RefractionTex, i.scrPos.xy/i.scrPos.w).rgb;
+
+		//æŠŠæ³•çº¿è½¬æ¢åˆ°ä¸–ç•Œç©ºé—´
+		bump = normalize(half3(dot(i.TtoW0.xyz, bump), dot(i.TtoW1.xyz, bump), dot(i.TtoW2.xyz, bump)));
+		fixed3 reflDir = reflect(-worldViewDir, bump);
+		fixed4 texColor = tex2D(_MainTex, i.uv.xy);
+		fixed3 reflCol = texCUBE(_Cubemap, reflDir).rgb * texColor.rgb;
+
+		fixed3 finalColor = reflCol * (1 - _RefractAmount) + refrCol * _RefractAmount;
+
+		return fixed4(finalColor, 1);
             }
             ENDCG
         }
     }
 
-	FallBack "Diffuse"
+    FallBack "Diffuse"
 }
