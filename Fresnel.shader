@@ -4,7 +4,7 @@ Shader "Fresnel"
     {
         _Color ("Color Tint", Color) = (1, 1, 1, 1)
         _FresnelScale("Fresnel Scale", Range(0, 1)) = 0.5
-        _Cubemap ("Reflection Cubemap", Cube) = "_Skybox" {}  //Ä£ÄâÕÛÉäµÄ»·¾³Ó³ÉäÎÆÀí
+        _Cubemap ("Reflection Cubemap", Cube) = "_Skybox" {}  //æ¨¡æ‹ŸæŠ˜å°„çš„ç¯å¢ƒæ˜ å°„çº¹ç†
     }
 
     SubShader
@@ -36,8 +36,8 @@ Shader "Fresnel"
                 float4 pos : SV_POSITION;
                 float3 worldPos : TEXCOORD0;
                 fixed3 worldNormal : TEXCOORD1;
-				fixed3 worldViewDir : TEXCOORD2;
-				fixed3 worldRefl : TEXCOORD3;
+		fixed3 worldViewDir : TEXCOORD2;
+		fixed3 worldRefl : TEXCOORD3;
                 SHADOW_COORDS(4)
             };
 
@@ -56,8 +56,8 @@ Shader "Fresnel"
             fixed4 frag(v2f i) : SV_Target
             {
                 fixed3 worldNormal = normalize(i.worldNormal);
-				fixed3 worldLightDir = normalize(UnityWorldSpaceLightDir(i.worldPos));		
-				fixed3 worldViewDir = normalize(i.worldViewDir);	
+		fixed3 worldLightDir = normalize(UnityWorldSpaceLightDir(i.worldPos));		
+		fixed3 worldViewDir = normalize(i.worldViewDir);	
 
                 fixed3 ambient = UNITY_LIGHTMODEL_AMBIENT.xyz;
                 fixed3 diffuse = _LightColor0.rgb * _Color.rgb * max(0, dot(worldNormal, worldLightDir));
@@ -66,7 +66,7 @@ Shader "Fresnel"
 
                 UNITY_LIGHT_ATTENUATION(atten, i, i.worldPos);
 
-                fixed3 color = ambient + lerp(diffuse, reflection, saturate(fresnel)) * atten;  //ÓÃfresnelÏµÊıÀ´»ìºÏÂş·´ÉäÑÕÉ«ºÍ·´ÉäÑÕÉ«£¬²¢ºÍ»·¾³¹âÏà¼Óºó·µ»Ø
+                fixed3 color = ambient + lerp(diffuse, reflection, saturate(fresnel)) * atten;  //ç”¨fresnelç³»æ•°æ¥æ··åˆæ¼«åå°„é¢œè‰²å’Œåå°„é¢œè‰²ï¼Œå¹¶å’Œç¯å¢ƒå…‰ç›¸åŠ åè¿”å›
                 return fixed4(color, 1.0);
             }
 
