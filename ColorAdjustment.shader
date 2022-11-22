@@ -34,39 +34,39 @@ Shader "Hidden/ColorAdjustment"
             float _HueShift;
 
             float3 HSVToRGB(float3 c)
-			{
-				float4 K = float4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
-				float3 p = abs(frac(c.xxx + K.xyz) * 6.0 - K.www);
-				return c.z * lerp(K.xxx, saturate(p - K.xxx), c.y);
-			}
+	    {
+		float4 K = float4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
+		float3 p = abs(frac(c.xxx + K.xyz) * 6.0 - K.www);
+		return c.z * lerp(K.xxx, saturate(p - K.xxx), c.y);
+	    }
 
-			float3 RGBToHSV(float3 c)
-			{
-				float4 K = float4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
-				float4 p = lerp(float4(c.bg, K.wz), float4(c.gb, K.xy), step(c.b, c.g));
-				float4 q = lerp(float4(p.xyw, c.r), float4(c.r, p.yzx), step(p.x, c.r));
-				float d = q.x - min(q.w, q.y);
-				float e = 1.0e-10;
-				return float3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);
-			}
+	    float3 RGBToHSV(float3 c)
+	    {
+		float4 K = float4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
+		float4 p = lerp(float4(c.bg, K.wz), float4(c.gb, K.xy), step(c.b, c.g));
+		float4 q = lerp(float4(p.xyw, c.r), float4(c.r, p.yzx), step(p.x, c.r));
+		float d = q.x - min(q.w, q.y);
+		float e = 1.0e-10;
+		return float3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);
+	    }
 
             half4 frag (v2f_img i) : SV_Target
             {
                 half4 col = tex2D(_MainTex, i.uv);
                 half3 finalColor = col.rgb;
-                //…´œ‡
+                //Ëâ≤Áõ∏
                 float3 hsv = RGBToHSV(finalColor);
                 hsv.r = hsv.r + _HueShift;
                 finalColor = HSVToRGB(hsv);
-                //¡¡∂»
+                //‰∫ÆÂ∫¶
                 finalColor = finalColor * _Brightness;
-                //±•∫Õ∂»
+                //È•±ÂíåÂ∫¶
                 float gray = dot(finalColor, float3(0.3, 0.59, 0.11));
                 finalColor = lerp(gray, finalColor, _Saturation);
-                //∂‘±»∂»
+                //ÂØπÊØîÂ∫¶
                 float3 avgColor = float3(0.5, 0.5, 0.5);
                 finalColor = lerp(avgColor, finalColor, _Contrast);
-                //∞µΩ«°¢‘Œ”∞
+                //ÊöóËßí„ÄÅÊôïÂΩ±
                 float2 d = abs(i.uv - float2(0.5, 0.5)) * _VignetteIntensity;
                 d = pow(saturate(d), _VignetteRoundness);
                 float dist = length(d);
