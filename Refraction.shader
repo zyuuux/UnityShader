@@ -3,10 +3,10 @@ Shader "Refraction"
     Properties
     {
         _Color ("Color Tint", Color) = (1, 1, 1, 1)
-        _RefractColor ("Refraction Color", Color) = (1, 1, 1, 1)  //¿ØÖÆÕÛÉäÑÕÉ«
-        _RefractAmount ("Refraction Amount", Range(0, 1)) = 1  //¿ØÖÆ²ÄÖÊµÄÕÛÉä³Ì¶È
-        _RefractRatio ("Refraction Ratio", Range(0.1, 1)) = 0.5  //²»Í¬½éÖÊµÄÍ¸Éä±È
-        _Cubemap ("Reflection Cubemap", Cube) = "_Skybox" {}  //Ä£ÄâÕÛÉäµÄ»·¾³Ó³ÉäÎÆÀí
+        _RefractColor ("Refraction Color", Color) = (1, 1, 1, 1)  //æ§åˆ¶æŠ˜å°„é¢œè‰²
+        _RefractAmount ("Refraction Amount", Range(0, 1)) = 1  //æ§åˆ¶æè´¨çš„æŠ˜å°„ç¨‹åº¦
+        _RefractRatio ("Refraction Ratio", Range(0.1, 1)) = 0.5  //ä¸åŒä»‹è´¨çš„é€å°„æ¯”
+        _Cubemap ("Reflection Cubemap", Cube) = "_Skybox" {}  //æ¨¡æ‹ŸæŠ˜å°„çš„ç¯å¢ƒæ˜ å°„çº¹ç†
     }
 
     SubShader
@@ -40,8 +40,8 @@ Shader "Refraction"
                 float4 pos : SV_POSITION;
                 float3 worldPos : TEXCOORD0;
                 fixed3 worldNormal : TEXCOORD1;
-				fixed3 worldViewDir : TEXCOORD2;
-				fixed3 worldRefr : TEXCOORD3;
+		fixed3 worldViewDir : TEXCOORD2;
+		fixed3 worldRefr : TEXCOORD3;
                 SHADOW_COORDS(4)
             };
 
@@ -60,8 +60,8 @@ Shader "Refraction"
             fixed4 frag(v2f i) : SV_Target
             {
                 fixed3 worldNormal = normalize(i.worldNormal);
-				fixed3 worldLightDir = normalize(UnityWorldSpaceLightDir(i.worldPos));		
-				fixed3 worldViewDir = normalize(i.worldViewDir);	
+		fixed3 worldLightDir = normalize(UnityWorldSpaceLightDir(i.worldPos));		
+		fixed3 worldViewDir = normalize(i.worldViewDir);	
 
                 fixed3 ambient = UNITY_LIGHTMODEL_AMBIENT.xyz;
                 fixed3 diffuse = _LightColor0.rgb * _Color.rgb * max(0, dot(worldNormal, worldLightDir));
@@ -69,7 +69,7 @@ Shader "Refraction"
 
                 UNITY_LIGHT_ATTENUATION(atten, i, i.worldPos);
 
-                fixed3 color = ambient + lerp(diffuse, refraction, _RefractAmount) * atten;  //»ìºÏÂş·´ÉäÑÕÉ«ºÍÕÛÉäÑÕÉ«£¬²¢ºÍ»·¾³¹âÏà¼Óºó·µ»Ø
+                fixed3 color = ambient + lerp(diffuse, refraction, _RefractAmount) * atten;  //æ··åˆæ¼«åå°„é¢œè‰²å’ŒæŠ˜å°„é¢œè‰²ï¼Œå¹¶å’Œç¯å¢ƒå…‰ç›¸åŠ åè¿”å›
                 return fixed4(color, 1.0);
             }
 
