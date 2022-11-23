@@ -16,7 +16,7 @@ Shader "OutAndRimLight"
 
     SubShader
     {
-        Pass  //pass1 ÊµÏÖrimºÍÌùÍ¼ÑÕÉ«
+        Pass  //pass1 å®ç°rimå’Œè´´å›¾é¢œè‰²
         {
             Tags{ "RenderType" = "Opaque" }
             CGPROGRAM
@@ -61,14 +61,14 @@ Shader "OutAndRimLight"
                 fixed3 worldLightDir = normalize(_WorldSpaceLightPos0.xyz);
                 fixed3 diffuse = max(0.0, dot(worldNormal, worldLightDir));
                 fixed3 diffuseColor = diffuse  * _LightColor0.xyz;
-                //¼ÆËãreflect·½Ïò
+                //è®¡ç®—reflectæ–¹å‘
                 fixed3 reflectDir = normalize(reflect(-worldLightDir, worldNormal));
-                //¼ÆËãÊÓ½Ç·½Ïò
+                //è®¡ç®—è§†è§’æ–¹å‘
                 fixed3 viewDir = normalize(_WorldSpaceCameraPos.xyz - i.worldPos);
-                //specular·ÖÁ¿
+                //specularåˆ†é‡
                 fixed3 specular = pow(max(0.0, dot(reflectDir, viewDir)), _SpecularGlass);
                 fixed3 specularColor = specular * _LightColor0.xyz;
-                //»·¾³¹â
+                //ç¯å¢ƒå…‰
                 fixed3 ambient = UNITY_LIGHTMODEL_AMBIENT.xyz * _ObjColor;
                 //RimLight
                 fixed3 worldViewDir = normalize(viewDir);
@@ -81,7 +81,7 @@ Shader "OutAndRimLight"
             ENDCG
         }
 
-        Pass  //pass2 ÊµÏÖOutLight
+        Pass  //pass2 å®ç°OutLight
         {
             Name "AtmosphereBase"
             Tags{ "LightMode" = "Always" }
@@ -117,8 +117,8 @@ Shader "OutAndRimLight"
             fixed4 frag(v2f i) : COLOR
             {
                 i.normal = normalize(i.normal);
-                //ÊÓ½Ç¹Û²ì·½Ïò
-                float3 viewDir = normalize(i.worldPos - _WorldSpaceCameraPos.xyz);  //äÖÈ¾µÄÊÇ±³Ãæ
+                //è§†è§’è§‚å¯Ÿæ–¹å‘
+                float3 viewDir = normalize(i.worldPos - _WorldSpaceCameraPos.xyz);  //æ¸²æŸ“çš„æ˜¯èƒŒé¢
                 float4 color = _AtmoColor;
                 color.a = pow(saturate(dot(viewDir, i.normal)), _OutLightPow);
                 color.a *= _OutLightStrength * dot(viewDir, i.normal);
