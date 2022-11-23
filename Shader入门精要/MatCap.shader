@@ -57,7 +57,7 @@ Shader "MatCap"
 
             fixed4 frag (v2f i) : SV_Target
             {
-                //½«·¨Ïß´ÓÊÀ½ç×ø±ê×ª±äÎªÊÓ¿Ú×ø±ê
+                //å°†æ³•çº¿ä»ä¸–ç•Œåæ ‡è½¬å˜ä¸ºè§†å£åæ ‡
                 half3 worldNormal = normalize(i.worldNormal);
                 half3 viewNormal = mul(UNITY_MATRIX_V, float4(worldNormal, 0.0)).xyz;
 
