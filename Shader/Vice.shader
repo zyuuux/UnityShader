@@ -39,7 +39,7 @@ Shader "Vice"
 
             sampler2D _MainTex;
             float4 _MainTex_ST;
-            float _Grow;  //¿ØÖÆÉú³¤
+            float _Grow;  //æ§åˆ¶ç”Ÿé•¿
             float _GrowMin;
             float _GrowMax;
             float _EndMin;
@@ -50,11 +50,11 @@ Shader "Vice"
             v2f vert (appdata v)
             {
                 v2f o;
-                float weight_expand = smoothstep(_GrowMin, _GrowMax, (v.texcoord.y - _Grow));  //ÊÕËõÈ¨ÖØ£¬¿ØÖÆË¥¼õ·¶Î§
-                float weight_end = smoothstep(_EndMin, _EndMax, v.texcoord.y);  //±£³ÖÄ©¶ËÊÕËõ²»±ä
-                float weight_combined = max(weight_expand, weight_end);  //¿ØÖÆÕûÌåÊÕËõÈ¨ÖØ
-                float3 vertex_offset = v.normal * _Expand * 0.01f * weight_combined;  //ÕûÌå±äĞ¡
-                float3 vertex_scale = v.normal * _Scale * 0.01f;  //ÕûÌå±ä´ó
+                float weight_expand = smoothstep(_GrowMin, _GrowMax, (v.texcoord.y - _Grow));  //æ”¶ç¼©æƒé‡ï¼Œæ§åˆ¶è¡°å‡èŒƒå›´
+                float weight_end = smoothstep(_EndMin, _EndMax, v.texcoord.y);  //ä¿æŒæœ«ç«¯æ”¶ç¼©ä¸å˜
+                float weight_combined = max(weight_expand, weight_end);  //æ§åˆ¶æ•´ä½“æ”¶ç¼©æƒé‡
+                float3 vertex_offset = v.normal * _Expand * 0.01f * weight_combined;  //æ•´ä½“å˜å°
+                float3 vertex_scale = v.normal * _Scale * 0.01f;  //æ•´ä½“å˜å¤§
                 float3 final_offset = vertex_offset + vertex_scale;
                 v.vertex.xyz = v.vertex.xyz + final_offset;
                 o.pos = UnityObjectToClipPos(v.vertex);
