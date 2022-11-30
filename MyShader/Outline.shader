@@ -46,8 +46,8 @@ Shader "Outline"
                 v2f o;
                 o.pos = UnityObjectToClipPos(v.vertex);
                 float3 vnormal = mul((float3x3)UNITY_MATRIX_IT_MV, v.normal);
-				float2 offset = TransformViewToProjection(vnormal.xy);
-				o.pos.xy += offset * _OutlineWidth;  //向法线方向扩展
+		float2 offset = TransformViewToProjection(vnormal.xy);
+		o.pos.xy += offset * _OutlineWidth;  //脧貌路篓脧脽路陆脧貌脌漏脮鹿
                 return o;
             }
 
